@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Preparedness</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        #response { white-space: pre-wrap; background-color: #f4f4f4; border: 1px solid #ddd; padding: 1em; margin-top: 1em; }
+    </style>
+</head>
+<body>
+    <h1>Disaster Preparedness Evaluation</h1>
+    <form id="evaluateForm">
+        <label for="address">Enter Address:</label>
+        <input type="text" id="address" name="address" size="50" required>
+        <button type="submit">Evaluate</button>
+    </form>
+
+    <h2>Disaster Plan</h2>
+    <div id="response">The disaster plan will appear here.</div>
+
+    <hr>
+
+    <h1>Chat</h1>
+    <div id="chat-container">
+        <div id="chat-history" style="height: 200px; border: 1px solid #ccc; overflow-y: scroll; padding: 10px; margin-bottom: 10px;"></div>
+        <input type="text" id="chat-input" placeholder="Ask a question..." style="width: 80%;">
+        <button id="chat-send">Send</button>
+    </div>
+
+    <script>
+        document.getElementById('evaluateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const address = document.getElementById('address').value;
+            const responseDiv = document.getElementById('response');
+            responseDiv.textContent = 'Loading...';
+
+            fetch('http://localhost:8080/evaluate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: address
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    responseDiv.textContent = 'Error: ' + data.error;
+                    return;
+                }
+                const rawData = JSON.stringify(data.rawData, null, 2);
+                const disasterPlan = data.disasterPlan;
+                responseDiv.innerHTML = `<h3>Disaster Plan</h3><pre>${disasterPlan}</pre><h3>Raw JSON Data</h3><pre>${rawData}</pre>`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                responseDiv.textContent = 'Error: Could not connect to the server. Make sure it is running.';
+            });
+        });
+
+        document.getElementById('chat-send').addEventListener('click', function() {
+            const chatInput = document.getElementById('chat-input');
+            const message = chatInput.value;
+            if (!message) return;
+
+            const chatHistory = document.getElementById('chat-history');
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.textContent = 'You: ' + message;
+            chatHistory.appendChild(userMessageDiv);
+
+            fetch('http://localhost:8080/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: message
+            })
+            .then(response => response.text())
+            .then(data => {
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.textContent = 'Chatbot: ' + data;
+                chatHistory.appendChild(botMessageDiv);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const errorMessageDiv = document.createElement('div');
+                errorMessageDiv.textContent = 'Error: Could not connect to the server.';
+                chatHistory.appendChild(errorMessageDiv);
+            });
+
+            chatInput.value = '';
+        });
+    </script>
+</body>
+</html>
