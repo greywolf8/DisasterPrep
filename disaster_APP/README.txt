@@ -14,6 +14,7 @@ This application provides a disaster preparedness plan based on a user-provided 
     *   OpenWeatherMap API (for weather data)
     *   Open-Meteo Geocoding API (for geographical data)
     *   NASA EONET (for natural event data)
+    *   NASA CMR and SMAP (for soil moisture data)
     *   OpenRouter AI (for generating the disaster plan and chatbot responses)
 
 ## Getting Started
@@ -34,6 +35,8 @@ This application provides a disaster preparedness plan based on a user-provided 
     WEATHER_API_KEY="your_openweathermap_api_key"
     NASA_API_KEY="your_nasa_api_key"
     GEOAPIFY_API_KEY="your_geoapify_api_key"
+    EARTHDATA_USERNAME="your_earthdata_username"
+    EARTHDATA_PASSWORD="your_earthdata_password"
     ```
 
 ### Running the Application

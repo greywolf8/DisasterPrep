@@ -27,7 +27,7 @@ public class OpenRouterClient {
             gson.toJson(combinedPayload);
 
         JsonObject body = new JsonObject();
-        body.addProperty("model", "openai/gpt-4o");
+        body.addProperty("model", "mistralai/mistral-7b-instruct");
         JsonArray messages = new JsonArray();
         JsonObject sys = new JsonObject();
         sys.addProperty("role", "system");

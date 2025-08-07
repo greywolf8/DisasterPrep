@@ -1,5 +1,6 @@
 --- Combined JSON Data ---
 {
+  "smapSoilMoisture": "0.4319",
   "weather": {
     "coord": {
       "lon": 80.2702,
@@ -7,38 +8,37 @@
     },
     "weather": [
       {
-        "id": 802,
+        "id": 804,
         "main": "Clouds",
-        "description": "scattered clouds",
-        "icon": "03n"
+        "description": "overcast clouds",
+        "icon": "04n"
       }
     ],
     "base": "stations",
     "main": {
-      "temp": 304.03,
-      "feels_like": 311.03,
-      "temp_min": 303.17,
-      "temp_max": 304.26,
+      "temp": 301.85,
+      "feels_like": 307.27,
+      "temp_min": 301.85,
+      "temp_max": 301.85,
       "pressure": 1006,
-      "humidity": 85,
+      "humidity": 81,
       "sea_level": 1006,
       "grnd_level": 1005
     },
-    "visibility": 6000,
+    "visibility": 10000,
     "wind": {
-      "speed": 3.6,
-      "deg": 210
+      "speed": 3.23,
+      "deg": 157,
+      "gust": 3.76
     },
     "clouds": {
-      "all": 40
+      "all": 100
     },
-    "dt": 1754072789,
+    "dt": 1754506082,
     "sys": {
-      "type": 2,
-      "id": 2104103,
       "country": "IN",
-      "sunrise": 1754007854,
-      "sunset": 1754053568
+      "sunrise": 1754526326,
+      "sunset": 1754571841
     },
     "timezone": 19800,
     "id": 1465730,
@@ -73,36 +73,20 @@
 }
 
 --- Disaster Preparedness Plan ---
-Based on the provided JSON data, here is the disaster preparedness analysis:
+ 1. Overall threat level: Low
+   Justification: The current weather data indicates overcast clouds, moderate humidity, and a stable atmospheric pressure. There are no reported natural disasters or hazards in the area based on the provided JSON data.
 
-1. **Overall Threat Level: Low**
-   - **Justification**: The current weather conditions in Park Town, Chennai, indicate scattered clouds with no severe weather alerts or natural events reported in the area. The temperature is relatively high with high humidity, but there are no immediate threats such as storms, floods, or other natural disasters. The wind speed is moderate at 3.6 m/s, and visibility is 6000 meters, which is adequate for normal activities.
+2. Summary of current hazards and distances: No current hazards are reported in the area based on the provided JSON data.
 
-2. **Summary of Current Hazards and Distances**:
-   - **Weather Conditions**: Scattered clouds with a temperature of 304.03 K (approximately 31°C), feels like 311.03 K (approximately 38°C). Humidity is high at 85%, which may cause discomfort.
-   - **Natural Events**: No ongoing natural events reported in the EONET data for the area.
+3. Recommended immediate actions and evacuation guidance: Since there are no immediate hazards, the recommended immediate action is to stay informed and monitor local news for any updates. There is no need for evacuation at this time.
 
-3. **Recommended Immediate Actions and Evacuation Guidance**:
-   - **Immediate Actions**: Stay hydrated and avoid prolonged exposure to heat due to high temperatures and humidity. Use air conditioning or fans to stay cool.
-   - **Evacuation Guidance**: No evacuation is necessary at this time as there are no immediate threats.
+4. Preventive tips, emergency kit checklist, and local resources:
+   - Preventive tips: Stay updated on weather conditions and any potential hazards in the area.
+   - Emergency kit checklist: A basic emergency kit should include water, non-perishable food, flashlight, batteries, first aid supplies, a multi-purpose tool, cell phone charger, and important documents.
+   - Local resources: In case of emergencies, contact local authorities or emergency services in India:
+     - Police: 100
+     - Fire: 101
+     - Ambulance: 102
+     - Emergency helpline (for all emergencies): 112
 
-4. **Preventive Tips, Emergency Kit Checklist, and Local Resources**:
-   - **Preventive Tips**:
-     - Monitor local weather updates for any changes.
-     - Plan outdoor activities during cooler parts of the day.
-     - Wear light, breathable clothing.
-   - **Emergency Kit Checklist**:
-     - Bottled water
-     - Non-perishable food items
-     - Battery-operated fan
-     - First aid kit
-     - Flashlight and extra batteries
-     - Portable phone charger
-   - **Local Resources**:
-     - Local weather stations and news channels for updates.
-     - Chennai Municipal Corporation for any local advisories.
-
-5. **Forecast Implications Next 48 Hours**:
-   - Given the current weather pattern of scattered clouds and moderate wind, it is likely that similar conditions will persist over the next 48 hours. There is no indication of severe weather developments, but continued monitoring of local weather forecasts is advised to stay informed of any changes.
-
-Overall, the situation in Park Town, Chennai, is stable with no immediate threats. Residents should remain vigilant for any weather updates but can continue with normal activities while taking precautions against heat and humidity.
+5. Forecast implications next 48 hours: Based on the current weather data, the forecast for the next 48 hours suggests cloudy conditions with a temperature range of 301.85K to 301.85K. It is recommended to stay updated on weather forecasts and monitor for any changes or potential hazards.
