@@ -1,97 +1,117 @@
 # Disaster Preparedness Application
 
-## Description
+A comprehensive disaster preparedness and management application that provides real-time disaster information, risk assessment, and personalized preparedness plans based on user location.
 
-This application provides a disaster preparedness plan based on a user-provided address. It fetches real-time data from various sources, including weather conditions, geographical information, and natural event data from NASA. The application is built as a Spring Boot backend with a simple HTML frontend. It also includes a chatbot feature that allows users to ask questions about the generated disaster plan.
+## 🌟 Features
 
-## Tech Stack
+- **Location-based Risk Assessment**: Analyzes disaster risks based on the user's location
+- **Real-time Data Integration**: Fetches and processes data from multiple sources including:
+  - NASA EONET for natural events
+  - Weather APIs for real-time weather conditions
+  - Soil moisture and precipitation data
+- **Interactive Map Interface**: Visualizes disaster data on an interactive map
+- **AI-Powered Chatbot**: Answers questions about disaster preparedness and provides guidance
+- **Personalized Preparedness Plans**: Generates customized disaster preparedness plans
 
-*   **Backend:** Java, Spring Boot
-*   **Frontend:** HTML, CSS, JavaScript
-*   **Build Tool:** Maven
-*   **APIs:**
-    *   Geoapify API (for geocoding)
-    *   OpenWeatherMap API (for weather data)
-    *   Open-Meteo Geocoding API (for geographical data)
-    *   NASA EONET (for natural event data)
-    *   OpenRouter AI (for generating the disaster plan and chatbot responses)
+## 🛠️ Tech Stack
 
-## Getting Started
+- **Backend**: Java 8+, Spring Boot
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Build Tool**: Maven
+- **APIs**:
+  - NASA EONET API
+  - OpenWeatherMap API
+  - Geoapify API
+  - OpenRouter AI
+  - NASA CMR and SMAP
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-*   Java 8 or higher
-*   Maven
-*   An internet connection
+- Java 8 or higher
+- Maven 3.6.0 or higher
+- API keys for the following services:
+  - OpenRouter AI
+  - OpenWeatherMap
+  - NASA Earthdata
+  - Geoapify
 
 ### Installation
 
-1.  Clone the repository.
-2.  Create a `.env` file in the root of the project and add the following API keys:
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd disaster_APP1
+   ```
 
-    ```
-    OPENROUTER_API_KEY="your_openrouter_api_key"
-    WEATHER_API_KEY="your_openweathermap_api_key"
-    NASA_API_KEY="your_nasa_api_key"
-    GEOAPIFY_API_KEY="your_geoapify_api_key"
-    ```
+2. **Set up environment variables**
+   Create a `.env` file in the project root with the following variables:
+   ```env
+   OPENROUTER_API_KEY=your_openrouter_api_key
+   WEATHER_API_KEY=your_openweathermap_api_key
+   NASA_API_KEY=your_nasa_api_key
+   GEOAPIFY_API_KEY=your_geoapify_api_key
+   EARTHDATA_USERNAME=your_earthdata_username
+   EARTHDATA_PASSWORD=your_earthdata_password
+   ```
 
-### Running the Application
+3. **Build the application**
+   ```bash
+   mvn clean install
+   ```
 
-1.  **Build the application:**
-    ```bash
-    mvn clean install
-    ```
+4. **Run the application**
+   ```bash
+   mvn spring-boot:run
+   ```
 
-2.  **Run the backend server:**
-    ```bash
-    java -jar target/disasterprep-1.0-SNAPSHOT.jar
-    ```
+5. **Access the application**
+   Open your browser and navigate to `http://localhost:8080`
 
-3.  **Open the frontend:** Open the `index.html` file in your web browser.
+## 📂 Project Structure
 
-## API Endpoints
-
-The application exposes the following REST endpoints:
-
-### `/evaluate`
-
-*   **Method:** `POST`
-*   **Content-Type:** `text/plain`
-*   **Request Body:** A plain text string containing the address to be evaluated.
-*   **Response:** A JSON object containing the raw data and the disaster plan.
-
-    **Example Request:**
-    ```bash
-    curl -X POST -H "Content-Type: text/plain" -d "Chennai, Tamil Nadu" http://localhost:8080/evaluate
-    ```
-
-### `/chat`
-
-*   **Method:** `POST`
-*   **Content-Type:** `text/plain`
-*   **Request Body:** A plain text string containing the user's message for the chatbot.
-*   **Response:** A plain text string with the chatbot's response.
-
-    **Example Request:**
-    ```bash
-    curl -X POST -H "Content-Type: text/plain" -d "What is the current threat level?" http://localhost:8080/chat
-    ```
-
-## Deployment
-
-This application can be deployed to any platform that supports Java applications, such as Render, Heroku, or AWS Elastic Beanstalk.
-
-### Build Command
-
-```bash
-mvn clean install
+```
+disaster_APP1/
+├── src/
+│   └── main/
+│       ├── java/com/example/
+│       │   ├── AddressToCoordsClient.java  # Geocoding service
+│       │   ├── CmrClient.java              # NASA CMR client
+│       │   ├── CombinedGeoClient.java      # Combined geolocation services
+│       │   ├── DisasterChatbot.java        # AI chatbot implementation
+│       │   ├── IMERGApiClient.java         # IMERG precipitation data
+│       │   ├── Main.java                   # Main application class
+│       │   ├── NasaEonetClient.java        # NASA EONET client
+│       │   ├── OpenRouterClient.java       # OpenRouter AI integration
+│       │   ├── PrecipitationReader.java    # Precipitation data processor
+│       │   └── WeatherApiClient.java       # Weather data service
+│       └── resources/
+│           └── application.properties      # Application configuration
+├── target/                                 # Compiled classes and build output
+├── index.html                              # Main web interface
+├── maps.html                               # Interactive map interface
+└── pom.xml                                 # Maven configuration
 ```
 
-### Start Command
+## 🤖 Using the Chatbot
 
-```bash
-java -jar target/disasterprep-1.0-SNAPSHOT.jar
-```
+The application includes an AI-powered chatbot that can answer questions about disaster preparedness. Simply type your question in the chat interface, and the bot will provide relevant information and guidance.
 
-Remember to set the environment variables for the API keys in your deployment environment.
+## 📊 Data Sources
+
+- **NASA EONET**: Natural event tracking (wildfires, storms, etc.)
+- **OpenWeatherMap**: Current and forecasted weather data
+- **NASA SMAP**: Soil moisture data for flood risk assessment
+- **IMERG**: Integrated Multi-satellitE Retrievals for GPM (Global Precipitation Measurement)
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- NASA for providing open data APIs
+- OpenWeatherMap for weather data
+- The Spring Boot and Maven communities
+- All open-source libraries used in this project
