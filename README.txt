@@ -107,7 +107,7 @@ The application includes an AI-powered chatbot that can answer questions about d
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE] file for details.
 
 ## 🙏 Acknowledgments
 
