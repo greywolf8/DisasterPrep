@@ -1,0 +1,96 @@
+--- Combined JSON Data ---
+{
+  "smapSoilMoisture": "0.2826",
+  "weather": {
+    "coord": {
+      "lon": 80.2707,
+      "lat": 13.0827
+    },
+    "weather": [
+      {
+        "id": 804,
+        "main": "Clouds",
+        "description": "overcast clouds",
+        "icon": "04n"
+      }
+    ],
+    "base": "stations",
+    "main": {
+      "temp": 301.06,
+      "feels_like": 304.45,
+      "temp_min": 301.06,
+      "temp_max": 301.06,
+      "pressure": 1004,
+      "humidity": 76,
+      "sea_level": 1004,
+      "grnd_level": 1004
+    },
+    "visibility": 10000,
+    "wind": {
+      "speed": 4.93,
+      "deg": 292,
+      "gust": 9.01
+    },
+    "clouds": {
+      "all": 100
+    },
+    "dt": 1755092579,
+    "sys": {
+      "country": "IN",
+      "sunrise": 1755044785,
+      "sunset": 1755090084
+    },
+    "timezone": 19800,
+    "id": 1465730,
+    "name": "Park Town",
+    "cod": 200
+  },
+  "precipitation_mm_hr": 6.751416,
+  "geoInfo": {
+    "elevationMeters": 8.0,
+    "location": {
+      "address": {
+        "amenity": "KFC",
+        "road": "Rama Pillai Street",
+        "neighbourhood": "Periamet",
+        "suburb": "Zone 5 Royapuram",
+        "city": "Chennai",
+        "state_district": "Chennai",
+        "state": "Tamil Nadu",
+        "ISO3166-2-lvl4": "IN-TN",
+        "postcode": "600001",
+        "country": "India",
+        "country_code": "in"
+      },
+      "display_name": "KFC, Rama Pillai Street, Periamet, Ward 58, Zone 5 Royapuram, Chennai, Tamil Nadu, 600001, India"
+    }
+  },
+  "eonetEvents": {
+    "title": "EONET Events",
+    "description": "Natural events from EONET.",
+    "link": "https://eonet.gsfc.nasa.gov/api/v3/events",
+    "events": []
+  }
+}
+
+--- Disaster Preparedness Plan ---
+### 1. Overall Threat Level:
+Based on the provided JSON data, the overall threat level is **Low**. The weather conditions indicate overcast clouds with no severe weather events or natural disasters reported in the EONET Events data.
+
+### 2. Summary of Current Hazards and Distances:
+- **Weather:** Overcast clouds with a temperature of 301.06 K, humidity at 76%, and wind speed of 4.93 m/s.
+- **Precipitation:** 6.75 mm/hr.
+- **Location:** Chennai, Tamil Nadu, India.
+
+### 3. Recommended Immediate Actions and Evacuation Guidance:
+Since the threat level is low and no immediate hazards are reported, there is no need for immediate evacuation. However, it is always advisable to stay informed about weather updates and emergency alerts.
+
+### 4. Preventive Tips, Emergency Kit Checklist, and Local Resources:
+- **Preventive Tips:** Stay informed about weather forecasts, have an emergency plan in place, and ensure your emergency kit is stocked and up to date.
+- **Emergency Kit Checklist:** Include water, non-perishable food, first aid supplies, flashlight, batteries, important documents, and medications.
+- **Local Resources:** Stay connected with local emergency services, weather authorities, and community disaster response teams.
+
+### 5. Forecast Implications Next 48 Hours:
+Based on the current data, the forecast for the next 48 hours in Chennai, Tamil Nadu, India, is expected to have similar weather conditions with overcast clouds. It is recommended to monitor weather updates for any changes.
+
+If you have any specific concerns or need further assistance, feel free to ask!

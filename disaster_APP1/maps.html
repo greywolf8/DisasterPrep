@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Management - Maps</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .map-container {
+            width: 100%;
+            height: 600px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .map-info {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-button">← Back to Dashboard</a>
+        <h1>Disaster Management Maps</h1>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="openTab(event, 'temperature')">Temperature</div>
+            <div class="tab" onclick="openTab(event, 'soil')">Soil Moisture</div>
+            <div class="tab" onclick="openTab(event, 'flood')">Flood Monitoring</div>
+            <div class="tab" onclick="openTab(event, 'earthquake')">Earthquakes</div>
+            <div class="tab" onclick="openTab(event, 'air')">Air Quality</div>
+        </div>
+
+        <!-- Temperature Map -->
+        <div id="temperature" class="tab-content active">
+            <div class="map-info">
+                <h2>Temperature Heatmap</h2>
+                <p>This map shows current temperature data. Replace 'YOUR_API_KEY' with a valid OpenWeatherMap API key.</p>
+            </div>
+            <div id="temp-map" class="map-container"></div>
+        </div>
+
+        <!-- Soil Moisture Map -->
+        <div id="soil" class="tab-content">
+            <div class="map-info">
+                <h2>Soil Moisture Map</h2>
+                <p>This map displays soil moisture data from NASA SMAP.</p>
+            </div>
+            <div id="soil-map" class="map-container"></div>
+        </div>
+
+        <!-- Flood Map -->
+        <div id="flood" class="tab-content">
+            <div class="map-info">
+                <h2>Flood Monitoring Points</h2>
+                <p>This map shows flood monitoring stations and alerts.</p>
+            </div>
+            <div id="flood-map" class="map-container"></div>
+        </div>
+
+        <!-- Earthquake Map -->
+        <div id="earthquake" class="tab-content">
+            <div class="map-info">
+                <h2>Recent Earthquakes</h2>
+                <p>This map shows recent earthquakes with magnitude 4.5+ from USGS.</p>
+            </div>
+            <div id="quake-map" class="map-container"></div>
+        </div>
+
+        <!-- Air Quality Map -->
+        <div id="air" class="tab-content">
+            <div class="map-info">
+                <h2>Air Quality Monitoring</h2>
+                <p>This map shows air quality monitoring stations and their readings.</p>
+            </div>
+            <div id="air-map" class="map-container"></div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <script>
+        // Tab functionality
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            // Hide all tab content
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            
+            // Remove active class from all tabs
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            
+            // Show the current tab and add active class
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+            
+            // Initialize map when tab is clicked (lazy loading)
+            if (tabName === 'temperature' && !window.tempMapInitialized) {
+                initTemperatureMap();
+                window.tempMapInitialized = true;
+            } else if (tabName === 'soil' && !window.soilMapInitialized) {
+                initSoilMoistureMap();
+                window.soilMapInitialized = true;
+            } else if (tabName === 'flood' && !window.floodMapInitialized) {
+                initFloodMap();
+                window.floodMapInitialized = true;
+            } else if (tabName === 'earthquake' && !window.quakeMapInitialized) {
+                initEarthquakeMap();
+                window.quakeMapInitialized = true;
+            } else if (tabName === 'air' && !window.airMapInitialized) {
+                initAirQualityMap();
+                window.airMapInitialized = true;
+            }
+        }
+
+        // Temperature Map
+        function initTemperatureMap() {
+            var map = L.map('temp-map').setView([20, 78], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Fetch the API key from our backend
+            fetch('/api/weather-api-key')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.apiKey) {
+                        var heatmapLayer = L.tileLayer(
+                            `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${data.apiKey}`,
+                            {opacity: 0.6}
+                        ).addTo(map);
+                    } else {
+                        console.error('Failed to load OpenWeatherMap API key');
+                        document.getElementById('temperature').querySelector('.map-info').innerHTML += 
+                            '<div style="color: red; margin-top: 10px;">Error: Could not load weather data. Please check the console for details.</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching API key:', error);
+                    document.getElementById('temperature').querySelector('.map-info').innerHTML += 
+                        '<div style="color: red; margin-top: 10px;">Error: Could not connect to the server. Please try again later.</div>';
+                });
+        }
+
+        // Soil Moisture Map
+        function initSoilMoistureMap() {
+            var map = L.map('soil-map').setView([20, 78], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // NASA SMAP Soil Moisture WMS Layer
+            var soilMoisture = L.tileLayer.wms('https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?', {
+                layers: 'SMAP_L3_Soil_Moisture',
+                format: 'image/png',
+                transparent: true,
+                opacity: 0.6,
+                attribution: 'NASA SMAP'
+            }).addTo(map);
+        }
+
+        // Flood Map
+        function initFloodMap() {
+            var map = L.map('flood-map').setView([20, 78], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Example flood monitoring points (replace with actual data)
+            var floodPoints = [
+                [20.5937, 78.9629, "Central India Flood Station"],
+                [28.6139, 77.2090, "Delhi Flood Station"],
+                [19.0760, 72.8777, "Mumbai Flood Station"],
+                [13.0827, 80.2707, "Chennai Flood Station"]
+            ];
+
+            floodPoints.forEach(function(point) {
+                L.marker([point[0], point[1]]).addTo(map)
+                    .bindPopup(point[2]);
+            });
+        }
+
+        // Earthquake Map
+        function initEarthquakeMap() {
+            var map = L.map('quake-map').setView([20, 78], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Fetch earthquake data from USGS
+            fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_month.geojson')
+                .then(response => response.json())
+                .then(data => {
+                    data.features.forEach(feature => {
+                        let coords = feature.geometry.coordinates;
+                        let magnitude = feature.properties.mag;
+                        L.circleMarker([coords[1], coords[0]], {
+                            radius: magnitude * 2,
+                            fillColor: getColor(magnitude),
+                            color: '#000',
+                            weight: 1,
+                            fillOpacity: 0.7
+                        }).addTo(map)
+                            .bindPopup(`<b>Magnitude:</b> ${magnitude}<br><b>Location:</b> ${feature.properties.place}<br><b>Time:</b> ${new Date(feature.properties.time).toLocaleString()}`);
+                    });
+                });
+
+            function getColor(magnitude) {
+                return magnitude > 6 ? '#d73027' :
+                       magnitude > 5 ? '#fc8d59' :
+                       magnitude > 4 ? '#fee08b' :
+                                      '#d9ef8b';
+            }
+        }
+
+        // Air Quality Map
+        function initAirQualityMap() {
+            var map = L.map('air-map').setView([20, 78], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Example air quality data (replace with actual API call)
+            var aqStations = [
+                [28.6139, 77.2090, "Delhi", 156, "PM2.5"],
+                [19.0760, 72.8777, "Mumbai", 89, "PM2.5"],
+                [13.0827, 80.2707, "Chennai", 112, "PM2.5"],
+                [12.9716, 77.5946, "Bangalore", 76, "PM2.5"]
+            ];
+
+            aqStations.forEach(function(station) {
+                L.circleMarker([station[0], station[1]], {
+                    radius: 10,
+                    fillColor: getAQIColor(station[3]),
+                    color: '#000',
+                    weight: 1,
+                    fillOpacity: 0.7
+                }).addTo(map)
+                    .bindPopup(`<b>Location:</b> ${station[2]}<br><b>${station[4]}:</b> ${station[3]}`);
+            });
+
+            function getAQIColor(aqi) {
+                return aqi > 150 ? '#8B0000' : // Very Unhealthy
+                       aqi > 100 ? '#FF0000' : // Unhealthy
+                       aqi > 50  ? '#FFA500' : // Moderate
+                                  '#00FF00';  // Good
+            }
+        }
+
+        // Initialize the first tab's map by default
+        document.addEventListener('DOMContentLoaded', function() {
+            initTemperatureMap();
+            window.tempMapInitialized = true;
+        });
+    </script>
+</body>
+</html>

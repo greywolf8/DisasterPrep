@@ -1,0 +1,196 @@
+1. Heatmap (Temperature)
+
+API: OpenWeatherMap Heatmap Tiles
+Base: OpenStreetMap + Leaflet
+
+HTML + JS (Leaflet)
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Temperature Heatmap</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map" style="width:100%; height:600px;"></div>
+  <script>
+    var map = L.map('map').setView([20, 78], 5);  // Center on India approx
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    var heatmapLayer = L.tileLayer(
+      'https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=YOUR_API_KEY',
+      {opacity: 0.6}
+    ).addTo(map);
+  </script>
+</body>
+</html>
+
+JavaFX (Java) embedding above HTML
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+
+public class HeatmapApp extends Application {
+    @Override
+    public void start(Stage stage) {
+        WebView webView = new WebView();
+        webView.getEngine().load(getClass().getResource("/heatmap.html").toExternalForm());
+
+        Scene scene = new Scene(webView, 800, 600);
+        stage.setScene(scene);
+        stage.setTitle("Temperature Heatmap");
+        stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+}
+
+2. Soil Moisture Map
+
+API: NASA SMAP (via WMS or GeoTIFF) - limited direct tile support; so use proxy or static data for demo.
+
+HTML + JS (Leaflet + WMS example)
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Soil Moisture Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map" style="width:100%; height:600px;"></div>
+  <script>
+    var map = L.map('map').setView([20, 78], 5);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // NASA SMAP Soil Moisture WMS Layer example (example endpoint, verify usage)
+    var soilMoisture = L.tileLayer.wms('https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi', {
+      layers: 'SMAP_L3_Soil_Moisture',
+      format: 'image/png',
+      transparent: true,
+      opacity: 0.6,
+      attribution: 'NASA SMAP'
+    }).addTo(map);
+  </script>
+</body>
+</html>
+
+JavaFX embedding same as above with HTML file
+
+⸻
+
+3. Flood Maps
+
+API: USGS Water Services (for US data), demo with generic marker placement instead
+
+HTML + JS (Marker example for flood monitoring points)
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flood Monitoring Points</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map" style="width:100%; height:600px;"></div>
+  <script>
+    var map = L.map('map').setView([40.7, -74], 5); // US Center
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // Example flood monitoring points (replace with USGS API fetched data)
+    var floodPoints = [
+      [40.7128, -74.0060, "New York Flood Station"],
+      [34.0522, -118.2437, "Los Angeles Flood Station"]
+    ];
+
+    floodPoints.forEach(function(point) {
+      L.marker([point[0], point[1]]).addTo(map)
+        .bindPopup(point[2]);
+    });
+  </script>
+</body>
+</html>
+
+4. Earthquake Maps
+
+API: USGS Earthquake API
+
+HTML + JS (Fetch and plot recent quakes)
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Earthquake Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map" style="width:100%; height:600px;"></div>
+  <script>
+    var map = L.map('map').setView([20, 78], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson')
+      .then(response => response.json())
+      .then(data => {
+        data.features.forEach(feature => {
+          let coords = feature.geometry.coordinates;
+          let magnitude = feature.properties.mag;
+          L.circleMarker([coords[1], coords[0]], {
+            radius: magnitude * 3,
+            fillColor: 'red',
+            color: 'darkred',
+            weight: 1,
+            fillOpacity: 0.7
+          }).addTo(map)
+            .bindPopup(`Magnitude: ${magnitude}<br>Location: ${feature.properties.place}`);
+        });
+      });
+  </script>
+</body>
+</html>
+
+5. Air Quality Map
+
+API: OpenAQ API (global AQ data)
+
+HTML + JS (Plot AQ monitoring stations)
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Air Quality Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map" style="width:100%; height:600px;"></div>
+  <script>
+    var map = L.map('map').setView([20, 78], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    fetch('https://api.openaq.org/v2/latest?limit=10&country=IN')
+      .then(response => response.json())
+      .then(data => {
+        data.results.forEach(station => {
+          let coords = station.coordinates;
+          if(coords) {
+            L.marker([coords.latitude, coords.longitude]).addTo(map)
+              .bindPopup(`Location: ${station.location}<br>PM2.5: ${station.measurements[0].value} ${station.measurements[0].unit}`);
+          }
+        });
+      });
+  </script>
+</body>
+</html>
+
